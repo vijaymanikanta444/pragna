@@ -223,7 +223,7 @@ body.drawer-open {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: 100dvh;
   width: 280px;
   background: #ffffff;
   border-right: 1px solid #e5e7eb;
@@ -239,22 +239,36 @@ body.drawer-open {
 
 .mobile-menu-content {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   overscroll-behavior: contain;
-  padding: 0.5rem 0.75rem 1rem;
+  padding: 0.5rem 0.5rem 1rem 0.75rem;
+  padding-right: 1rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 #e5e7eb;
 }
 
 .mobile-menu-content::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
+  background: transparent;
 }
 
 .mobile-menu-content::-webkit-scrollbar-track {
   background: transparent;
+  border-left: 1px solid #e5e7eb;
 }
 
 .mobile-menu-content::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
-  border-radius: 999px;
+  background: #94a3b8;
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.mobile-menu-content::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+  background-clip: padding-box;
 }
 
 .mobile-menu.is-open {
@@ -564,10 +578,6 @@ body.drawer-open {
   }
 
   .mobile-menu-toggle {
-    display: block;
-  }
-
-  .mobile-menu {
     display: block;
   }
 
