@@ -1,14 +1,26 @@
 // User Types
-export type UserRole = "reader" | "writer" | "editor" | "admin";
+export type UserRole = "author" | "editor" | "admin";
+export type UserScope = "internal" | "external";
+export type UserType =
+  | "student"
+  | "faculty"
+  | "alumni"
+  | "professional"
+  | "guest";
 
 export interface User {
   id: string;
   email: string;
   fullName: string;
   role: UserRole;
+  userScope: UserScope;
+  userType?: UserType;
+  bio?: string;
+  profileImage?: string;
   department?: string;
-  avatarUrl?: string;
+  company?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 // Article Types

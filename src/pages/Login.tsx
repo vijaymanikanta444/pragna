@@ -6,7 +6,9 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [department, setDepartment] = useState("");
+  const [userScope, setUserScope] = useState<"internal" | "external">(
+    "external",
+  );
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -25,7 +27,7 @@ export default function Login() {
           setLoading(false);
           return;
         }
-        await signUp(email, password, fullName, department || undefined);
+        await signUp(email, password, fullName, userScope);
         alert(
           "Account created! Please check your email to verify your account.",
         );
@@ -63,14 +65,17 @@ export default function Login() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="department">Department (Optional)</label>
-                <input
-                  type="text"
-                  id="department"
-                  value={department}
-                  onChange={(e) => setDepartment(e.target.value)}
-                  placeholder="e.g., Computer Science"
-                />
+                <label htmlFor="userScope">Account Type</label>
+                <select
+                  id="userScope"
+                  value={userScope}
+                  onChange={(e) =>
+                    setUserScope(e.target.value as "internal" | "external")
+                  }
+                >
+                  <option value="external">External (Guest)</option>
+                  <option value="internal">Internal (VIET Member)</option>
+                </select>
               </div>
             </>
           )}

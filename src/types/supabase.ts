@@ -18,28 +18,61 @@ export interface Database {
           id: string;
           email: string;
           full_name: string;
-          role: "reader" | "writer" | "editor" | "admin";
+          role: "author" | "editor" | "admin";
+          user_scope: "internal" | "external";
+          user_type:
+            | "student"
+            | "faculty"
+            | "alumni"
+            | "professional"
+            | "guest"
+            | null;
+          bio: string | null;
+          profile_image: string | null;
           department: string | null;
-          avatar_url: string | null;
+          company: string | null;
           created_at: string;
+          updated_at: string | null;
         };
         Insert: {
           id: string;
           email: string;
           full_name: string;
-          role?: "reader" | "writer" | "editor" | "admin";
+          role?: "author" | "editor" | "admin";
+          user_scope?: "internal" | "external";
+          user_type?:
+            | "student"
+            | "faculty"
+            | "alumni"
+            | "professional"
+            | "guest"
+            | null;
+          bio?: string | null;
+          profile_image?: string | null;
           department?: string | null;
-          avatar_url?: string | null;
+          company?: string | null;
           created_at?: string;
+          updated_at?: string | null;
         };
         Update: {
           id?: string;
           email?: string;
           full_name?: string;
-          role?: "reader" | "writer" | "editor" | "admin";
+          role?: "author" | "editor" | "admin";
+          user_scope?: "internal" | "external";
+          user_type?:
+            | "student"
+            | "faculty"
+            | "alumni"
+            | "professional"
+            | "guest"
+            | null;
+          bio?: string | null;
+          profile_image?: string | null;
           department?: string | null;
-          avatar_url?: string | null;
+          company?: string | null;
           created_at?: string;
+          updated_at?: string | null;
         };
       };
       articles: {
@@ -204,7 +237,7 @@ export interface Database {
       [_ in never]: never;
     };
     Enums: {
-      user_role: "reader" | "writer" | "editor" | "admin";
+      user_role: "author" | "editor" | "admin";
       article_status: "draft" | "pending_review" | "published" | "archived";
     };
   };

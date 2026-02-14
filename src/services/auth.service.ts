@@ -3,7 +3,6 @@ import type { User } from "../types";
 import type { Database } from "../types/supabase";
 
 type UserRow = Database["public"]["Tables"]["users"]["Row"];
-type UserUpdate = Database["public"]["Tables"]["users"]["Update"];
 
 export const authService = {
   // Sign up with email and password
@@ -11,7 +10,7 @@ export const authService = {
     email: string,
     password: string,
     fullName: string,
-    department?: string,
+    userScope: "internal" | "external" = "external",
   ) {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -19,7 +18,7 @@ export const authService = {
       options: {
         data: {
           full_name: fullName,
-          department: department || null,
+          user_scope: userScope,
         },
       },
     });
@@ -77,7 +76,6 @@ export const authService = {
 
     if (!data) return null;
 
-    // Type assertion since Supabase types are correctly defined
     const userData = data as UserRow;
 
     return {
@@ -85,14 +83,29 @@ export const authService = {
       email: userData.email,
       fullName: userData.full_name,
       role: userData.role,
+      userScope: userData.user_scope,
+      userType: userData.user_type || undefined,
+      bio: userData.bio || undefined,
+      profileImage: userData.profile_image || undefined,
       department: userData.department || undefined,
-      avatarUrl: userData.avatar_url || undefined,
+      company: userData.company || undefined,
       createdAt: userData.created_at,
+      updatedAt: userData.updated_at || undefined,
     };
   },
 
   // Update user profile
-  async updateProfile(userId: string, updates: UserUpdate) {
+  async updateProfile(
+    userId: string,
+    updates: {
+      full_name?: string;
+      bio?: string;
+      profile_image?: string;
+      user_type?: string;
+      department?: string;
+      company?: string;
+    },
+  ) {
     const { data, error } = await supabase
       .from("users")
       .update(updates)

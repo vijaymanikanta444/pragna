@@ -12,14 +12,17 @@ interface AuthContextType {
     email: string,
     password: string,
     fullName: string,
-    department?: string,
+    userScope?: "internal" | "external",
   ) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   updateProfile: (updates: {
     full_name?: string;
+    bio?: string;
+    profile_image?: string;
+    user_type?: string;
     department?: string;
-    avatar_url?: string;
+    company?: string;
   }) => Promise<void>;
 }
 
@@ -77,12 +80,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     email: string,
     password: string,
     fullName: string,
-    department?: string,
+    userScope: "internal" | "external" = "external",
   ) => {
     setLoading(true);
     try {
-      await authService.signUp(email, password, fullName, department);
-      // User profile will be created automatically via database trigger
+      await authService.signUp(email, password, fullName, userScope);
     } catch (error) {
       console.error("Sign up error:", error);
       throw error;
@@ -95,7 +97,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       await authService.signIn(email, password);
-      // Auth state change will trigger profile load
     } catch (error) {
       console.error("Sign in error:", error);
       throw error;
@@ -120,8 +121,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateProfile = async (updates: {
     full_name?: string;
+    bio?: string;
+    profile_image?: string;
+    user_type?: string;
     department?: string;
-    avatar_url?: string;
+    company?: string;
   }) => {
     if (!user) throw new Error("No user logged in");
 
